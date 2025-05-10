@@ -1,9 +1,14 @@
-import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+  ReactNode,
+} from 'react';
 import { ConnectionStatus } from '../types';
 
 interface WebSocketContextType {
-  ipAddress: string;
-  setIpAddress: (ip: string) => void;
   connectionStatus: ConnectionStatus;
   connect: () => void;
   disconnect: () => void;
@@ -12,13 +17,11 @@ interface WebSocketContextType {
 }
 
 const WebSocketContext = createContext<WebSocketContextType>({
-  ipAddress: '',
-  setIpAddress: () => {},
   connectionStatus: { connected: false, error: null, lastUpdated: null },
   connect: () => {},
   disconnect: () => {},
   sendMessage: () => {},
-  websocket: null
+  websocket: null,
 });
 
 export const useWebSocket = () => useContext(WebSocketContext);
@@ -27,16 +30,18 @@ interface WebSocketProviderProps {
   children: ReactNode;
 }
 
+// ✅ Your Elastic IP + endpoint path
+const WEBSOCKET_URL = 'ws://13.204.8.46/api/';
+
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
-  const [ipAddress, setIpAddress] = useState<string>('');
   const [websocket, setWebsocket] = useState<WebSocket | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>({
     connected: false,
     error: null,
-    lastUpdated: null
+    lastUpdated: null,
   });
 
-  // Clean up WebSocket on unmount
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (websocket) {
@@ -46,23 +51,14 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   }, [websocket]);
 
   const connect = useCallback(() => {
-    if (!ipAddress) {
-      setConnectionStatus({
-        connected: false,
-        error: 'Please enter a valid IP address',
-        lastUpdated: Date.now()
-      });
-      return;
-    }
-
     try {
-      const ws = new WebSocket(`ws://${ipAddress}`);
-      
+      const ws = new WebSocket(WEBSOCKET_URL);
+
       ws.onopen = () => {
         setConnectionStatus({
           connected: true,
           error: null,
-          lastUpdated: Date.now()
+          lastUpdated: Date.now(),
         });
         setWebsocket(ws);
       };
@@ -71,7 +67,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
         setConnectionStatus({
           connected: false,
           error: 'Connection closed',
-          lastUpdated: Date.now()
+          lastUpdated: Date.now(),
         });
         setWebsocket(null);
       };
@@ -80,20 +76,19 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
         setConnectionStatus({
           connected: false,
           error: 'Connection error',
-          lastUpdated: Date.now()
+          lastUpdated: Date.now(),
         });
         console.error('WebSocket error:', error);
       };
-      
     } catch (error) {
       setConnectionStatus({
         connected: false,
         error: 'Failed to connect',
-        lastUpdated: Date.now()
+        lastUpdated: Date.now(),
       });
       console.error('WebSocket connection error:', error);
     }
-  }, [ipAddress]);
+  }, []);
 
   const disconnect = useCallback(() => {
     if (websocket) {
@@ -102,29 +97,30 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
       setConnectionStatus({
         connected: false,
         error: null,
-        lastUpdated: Date.now()
+        lastUpdated: Date.now(),
       });
     }
   }, [websocket]);
 
-  const sendMessage = useCallback((message: string) => {
-    if (websocket && websocket.readyState === WebSocket.OPEN) {
-      websocket.send(message);
-    } else {
-      console.error('WebSocket is not connected');
-    }
-  }, [websocket]);
+  const sendMessage = useCallback(
+    (message: string) => {
+      if (websocket && websocket.readyState === WebSocket.OPEN) {
+        websocket.send(message);
+      } else {
+        console.error('WebSocket is not connected');
+      }
+    },
+    [websocket]
+  );
 
   return (
     <WebSocketContext.Provider
       value={{
-        ipAddress,
-        setIpAddress,
         connectionStatus,
         connect,
         disconnect,
         sendMessage,
-        websocket
+        websocket,
       }}
     >
       {children}
