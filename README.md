@@ -49,3 +49,18 @@ Made with ❤️ by:
     </td>
   </tr>
 </table>
+
+---
+## 📸 Screenshots
+
+Here are some visuals from the Remote Health Monitoring System in action:
+
+<p align="center">
+  <img src="images/dashboard.png" alt="Dashboard Screenshot" width="80%" />
+  <br/><br/>
+
+  <img src="images/img.jpg" alt="Live Sensor Data Graph" width="80%" />
+  <br/><br/>
+
+  <img src="images/circuit.jpg" alt="Circuit Diagram (ESP32 + Sensors)" width="60%" />
+</p>
