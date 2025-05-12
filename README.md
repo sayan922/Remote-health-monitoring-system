@@ -1,7 +1,8 @@
 # 🩺 Remote Health Monitoring System 📊
 
 A real-time health monitoring dashboard that collects data from sensors via ESP32 and AWS IoT, stores it in DynamoDB, and visualizes it live in the browser using WebSocket + Chart.js. 🚀
->✅ Deployed on AWS EC2 with Elastic IP!
+>✅ Deployed on AWS EC2 with Elastic an IP!
+> 🔗 [http://13.203.253.242/](http://13.203.253.242/)
 
 ---
 
