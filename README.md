@@ -10,11 +10,9 @@ A real-time health monitoring dashboard that collects data from sensors via ESP3
 
 - 🌡️ Live Temperature & Pressure Monitoring (DS18B20, BMP280)
 - 📶 ESP32-based Wireless Sensor Network
-- ☁️ Real-time data stream via AWS IoT Core + MQTT
 - 💾 Storage on AWS DynamoDB
 - 🧠 Backend: Flask + WebSocket to serve live data
 - 💻 Frontend: React + Chart.js for beautiful, responsive charts
-- 🔒 Secure and Scalable AWS Architecture
 
 ---
 
@@ -23,7 +21,7 @@ A real-time health monitoring dashboard that collects data from sensors via ESP3
 | Layer          | Technology |
 |----------------|------------|
 | 👨‍🔬 Sensors       | DS18B20 (Temp), BMP280 (Pressure/Alt.) |
-| 🔌 Microcontroller | ESP32 (Wi-Fi + MQTT) |
+| 🔌 Microcontroller | ESP32 (Wi-Fi + BLE) |
 | ☁️ Cloud         | AWS IoT Core, AWS DynamoDB |
 | 🧠 Backend       | Flask + WebSocket + Boto3 |
 | 💻 Frontend      | React.js + Chart.js |
@@ -51,7 +49,7 @@ Made with ❤️ by:
 </table>
 
 ---
-## 📸 Screenshots
+## 📸 Images
 
 Here are some visuals from the Remote Health Monitoring System in action:
 
