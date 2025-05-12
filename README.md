@@ -29,5 +29,23 @@ A real-time health monitoring dashboard that collects data from sensors via ESP3
 | 💻 Frontend      | React.js + Chart.js |
 
 ---
+## 🤝 Contributors
 
+Made with ❤️ by:
 
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/Subratkb02">
+        <img src="https://avatars.githubusercontent.com/Subratkb02" width="100px;" alt="Subrat Kumar Behra"/><br />
+        <sub><b>Subrat Kumar Behra</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/sayan922">
+        <img src="https://avatars.githubusercontent.com/sayan922" width="100px;" alt="Sayan Chakraborty"/><br />
+        <sub><b>Sayan Chakraborty</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
