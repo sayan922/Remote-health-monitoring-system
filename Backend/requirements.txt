@@ -8,3 +8,4 @@ six
 urllib3
 websocket-client
 websockets
+dotenv
