@@ -31,7 +31,7 @@ interface WebSocketProviderProps {
 }
 
 // ✅ Your Elastic IP + endpoint path
-const WEBSOCKET_URL = 'ws://127.0.0.1:5000';
+const WEBSOCKET_URL = 'wss://remote-health-monitoring-system-b1jt.onrender.com';
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
   const [websocket, setWebsocket] = useState<WebSocket | null>(null);
