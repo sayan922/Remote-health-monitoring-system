@@ -5,6 +5,8 @@ import boto3
 import decimal
 from dotenv import load_dotenv
 import os
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import threading
 
 # ✅ Load AWS credentials from .env file
 load_dotenv()
@@ -78,10 +80,28 @@ async def send_data_from_dynamodb(websocket):
     except Exception as e:
         print(f"❌ WebSocket send error: {e}")
 
-# ✅ Start WebSocket server
+# ✅ HTTP server for Render health check (port 3000)
+class HealthCheckHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == "/ping":
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"pong")
+        else:
+            self.send_response(404)
+            self.end_headers()
+
+def run_http_server():
+    server = HTTPServer(('', 3000), HealthCheckHandler)
+    print("🌐 Health check server running on http://0.0.0.0:3000/ping")
+    server.serve_forever()
+
+# ✅ Start everything
 async def main():
-    async with websockets.serve(send_data_from_dynamodb, "0.0.0.0", 5000):
-        print("✅ WebSocket server running on ws://0.0.0.0:5000")
+    threading.Thread(target=run_http_server, daemon=True).start()
+
+    async with websockets.serve(send_data_from_dynamodb, "0.0.0.0", 5000, path="/ws"):
+        print("✅ WebSocket server running on ws://0.0.0.0:5000/ws")
         await asyncio.Future()
 
 if __name__ == "__main__":
