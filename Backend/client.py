@@ -4,7 +4,7 @@ import json
 
 async def receive_data():
     """Connect to WebSocket server and receive data."""
-    uri = "ws://127.0.0.1:5000"  # Change the server URI if needed
+    uri = "wss://remote-health-monitoring-system-b1jt.onrender.com/ws"  # Change the server URI if needed
     try:
         async with websockets.connect(uri) as websocket:
             print("Connected to server.")

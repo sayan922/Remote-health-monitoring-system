@@ -80,8 +80,8 @@ async def send_data_from_dynamodb(websocket):
 
 # ✅ Start WebSocket server
 async def main():
-    async with websockets.serve(send_data_from_dynamodb, "127.0.0.1", 5000):
-        print("✅ WebSocket server running on ws://127.0.0.1:5000")
+    async with websockets.serve(send_data_from_dynamodb, "0.0.0.0", 5000):
+        print("✅ WebSocket server running on ws://0.0.0.0:5000")
         await asyncio.Future()
 
 if __name__ == "__main__":
