@@ -100,7 +100,7 @@ def run_http_server():
 async def main():
     threading.Thread(target=run_http_server, daemon=True).start()
 
-    async with websockets.serve(send_data_from_dynamodb, "0.0.0.0", 5000, path="/ws"):
+    async with websockets.serve(send_data_from_dynamodb, "0.0.0.0", 5000):
         print("✅ WebSocket server running on ws://0.0.0.0:5000/ws")
         await asyncio.Future()
 
