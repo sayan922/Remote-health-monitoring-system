@@ -3,7 +3,7 @@ import { Wifi, WifiOff, AlertCircle } from 'lucide-react';
 import { useWebSocket } from '../contexts/WebSocketContext';
 import { format } from 'date-fns';
 
-const FIXED_IP = '127.0.0.1:5000';
+const FIXED_IP = 'https://remote-health-monitoring-system-foqe.onrender.com';
 
 const ConnectionPanel: React.FC = () => {
   const { connectionStatus, connect } = useWebSocket();

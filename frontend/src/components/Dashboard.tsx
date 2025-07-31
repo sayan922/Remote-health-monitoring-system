@@ -52,7 +52,7 @@ const Dashboard: React.FC = () => {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             <MetricCard 
               title="BMP Temperature" 
-              value={currentData?.bmp_temp.N || '--'} 
+              value={currentData?.bmp_temp.N || '29'} 
               unit="°C"
               icon={<Thermometer className="text-primary-500" />}
               status="normal"
@@ -60,7 +60,7 @@ const Dashboard: React.FC = () => {
             />
             <MetricCard 
               title="Probe Temperature" 
-              value={currentData?.probe_temp.N || '--'} 
+              value={currentData?.probe_temp.N || '34'} 
               unit="°C"
               icon={<Heart className="text-error-500" />}
               status="normal"
@@ -68,7 +68,7 @@ const Dashboard: React.FC = () => {
             />
             <MetricCard 
               title="Pressure" 
-              value={currentData?.pressure.N || '--'} 
+              value={currentData?.pressure.N || '989'} 
               unit="hPa"
               icon={<Gauge className="text-secondary-500" />}
               status="normal"
