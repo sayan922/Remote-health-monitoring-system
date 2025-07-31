@@ -3,7 +3,8 @@ import { Wifi, WifiOff, AlertCircle } from 'lucide-react';
 import { useWebSocket } from '../contexts/WebSocketContext';
 import { format } from 'date-fns';
 
-const FIXED_IP = 'https://remote-health-monitoring-system-foqe.onrender.com';
+// Get WebSocket URL from Vite env variable
+const WS_URL = import.meta.env.VITE_WS_URL;
 
 const ConnectionPanel: React.FC = () => {
   const { connectionStatus, connect } = useWebSocket();
@@ -11,7 +12,11 @@ const ConnectionPanel: React.FC = () => {
 
   // Automatically connect on mount
   useEffect(() => {
-    connect(FIXED_IP);
+    if (WS_URL) {
+      connect(WS_URL);
+    } else {
+      console.error('VITE_WS_URL is not defined in the environment variables.');
+    }
   }, [connect]);
 
   const formatTimestamp = (timestamp: number | null) => {

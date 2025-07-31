@@ -10,7 +10,7 @@ import { ConnectionStatus } from '../types';
 
 interface WebSocketContextType {
   connectionStatus: ConnectionStatus;
-  connect: () => void;
+  connect: (url?: string) => void;
   disconnect: () => void;
   sendMessage: (message: string) => void;
   websocket: WebSocket | null;
@@ -30,8 +30,8 @@ interface WebSocketProviderProps {
   children: ReactNode;
 }
 
-// ✅ Your Elastic IP + endpoint path
-const WEBSOCKET_URL = 'wss://remote-health-monitoring-system-b1jt.onrender.com';
+// 🧠 Default to env var, fallback to empty string
+const DEFAULT_WS_URL = import.meta.env.VITE_WS_URL || '';
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
   const [websocket, setWebsocket] = useState<WebSocket | null>(null);
@@ -50,9 +50,19 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     };
   }, [websocket]);
 
-  const connect = useCallback(() => {
+  const connect = useCallback((url: string = DEFAULT_WS_URL) => {
+    if (!url) {
+      console.error('WebSocket URL is not provided');
+      setConnectionStatus({
+        connected: false,
+        error: 'Missing WebSocket URL',
+        lastUpdated: Date.now(),
+      });
+      return;
+    }
+
     try {
-      const ws = new WebSocket(WEBSOCKET_URL);
+      const ws = new WebSocket(url);
 
       ws.onopen = () => {
         setConnectionStatus({
