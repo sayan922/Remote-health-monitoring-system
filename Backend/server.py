@@ -95,12 +95,16 @@ def run_http_server():
     server = HTTPServer(('', 3000), HealthCheckHandler)
     print("🌐 Health check server running on http://0.0.0.0:3000/ping")
     server.serve_forever()
+    
+    
+port = int(os.getenv("PORT", 5000))
+
 
 # ✅ Start everything
 async def main():
     threading.Thread(target=run_http_server, daemon=True).start()
 
-    async with websockets.serve(send_data_from_dynamodb, "0.0.0.0", 5000):
+    async with websockets.serve(send_data_from_dynamodb, "0.0.0.0", port):
         print("✅ WebSocket server running on ws://0.0.0.0:5000")
         await asyncio.Future()
 
