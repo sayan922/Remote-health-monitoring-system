@@ -5,7 +5,7 @@ import boto3
 import decimal
 from dotenv import load_dotenv
 import os
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from flask import Flask
 import threading
 
 # ✅ Load AWS credentials from .env file
@@ -24,8 +24,19 @@ dynamodb = boto3.resource(
 # ✅ Reference your table
 table = dynamodb.Table("med-data-sayan922")
 
-# ✅ Keep track of last sent data_id
-last_sent_data_id = None
+# ✅ Flask setup
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "🚀 WebSocket server is running!"
+
+@app.route("/ping")
+def ping():
+    return "pong", 200
+
+def run_flask():
+    app.run(host="0.0.0.0", port=3000)
 
 # ✅ Optional JSON encoder for Decimal handling
 class DecimalEncoder(json.JSONEncoder):
@@ -35,6 +46,8 @@ class DecimalEncoder(json.JSONEncoder):
         return super().default(o)
 
 # ✅ Fetch latest item based on numeric data_id
+last_sent_data_id = None
+
 async def fetch_data_from_dynamodb():
     global last_sent_data_id
     try:
@@ -44,10 +57,9 @@ async def fetch_data_from_dynamodb():
         if not items:
             return {}
 
-        # Convert data_id to int, sort to get highest/latest
         latest_item = max(items, key=lambda x: int(x.get("data_id", 0)))
-
         data_id = latest_item.get("data_id")
+
         if data_id == last_sent_data_id:
             return {}
 
@@ -80,33 +92,16 @@ async def send_data_from_dynamodb(websocket):
     except Exception as e:
         print(f"❌ WebSocket send error: {e}")
 
-# ✅ HTTP server for Render health check (port 3000)
-class HealthCheckHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        if self.path == "/ping":
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(b"pong")
-        else:
-            self.send_response(404)
-            self.end_headers()
-
-def run_http_server():
-    server = HTTPServer(('', 3000), HealthCheckHandler)
-    print("🌐 Health check server running on http://0.0.0.0:3000/ping")
-    server.serve_forever()
-    
-    
+# ✅ Start everything
 port = int(os.getenv("PORT", 5000))
 
-
-# ✅ Start everything
 async def main():
-    threading.Thread(target=run_http_server, daemon=True).start()
+    # Start Flask server in a separate thread
+    threading.Thread(target=run_flask, daemon=True).start()
 
     async with websockets.serve(send_data_from_dynamodb, "0.0.0.0", port):
-        print("✅ WebSocket server running on ws://0.0.0.0:5000")
-        await asyncio.Future()
+        print(f"✅ WebSocket server running on ws://0.0.0.0:{port}")
+        await asyncio.Future()  # run forever
 
 if __name__ == "__main__":
     asyncio.run(main())
