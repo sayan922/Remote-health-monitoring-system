@@ -14,11 +14,11 @@ const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen p-4 md:p-6">
       <header className="mb-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+        <div className="flex flex-col items-start justify-between mb-4 md:flex-row md:items-center">
           <div className="flex items-center mb-4 md:mb-0">
-            <Activity size={32} className="text-primary-500 mr-3" />
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-              Remote Healthcare Monitoring
+            <Activity size={32} className="mr-3 text-primary-500" />
+            <h1 className="text-2xl font-bold text-gray-800 md:text-3xl">
+              SyncPulse
             </h1>
           </div>
           
@@ -48,8 +48,8 @@ const Dashboard: React.FC = () => {
       <main>
         {/* Current Metrics Section */}
         <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-4 text-gray-700">Current Readings</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <h2 className="mb-4 text-xl font-semibold text-gray-700">Current Readings</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             <MetricCard 
               title="BMP Temperature" 
               value={currentData?.bmp_temp.N || '--'} 
@@ -79,19 +79,19 @@ const Dashboard: React.FC = () => {
         
         {/* Charts Section */}
         <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-4 text-gray-700">Trend Analysis</h2>
+          <h2 className="mb-4 text-xl font-semibold text-gray-700">Trend Analysis</h2>
           <ChartPanel />
         </section>
         
         {/* Historical Data Section */}
         <section>
-          <h2 className="text-xl font-semibold mb-4 text-gray-700">Historical Data</h2>
+          <h2 className="mb-4 text-xl font-semibold text-gray-700">Historical Data</h2>
           <HistoricalDataTable />
         </section>
       </main>
       
-      <footer className="mt-12 pt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
-        <p>© {new Date().getFullYear()} Remote Healthcare Monitoring System</p>
+      <footer className="pt-6 mt-12 text-sm text-center text-gray-500 border-t border-gray-200">
+        <p>© {new Date().getFullYear()} SyncPulse</p>
       </footer>
     </div>
   );
